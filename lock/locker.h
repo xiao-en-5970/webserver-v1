@@ -71,6 +71,10 @@ public:
     bool signal(){
         return pthread_cond_signal(&_cond)==0;
     }
+    bool broadcast(){
+        return pthread_cond_broadcast(&_cond)==0;
+    }
 private:
     pthread_cond_t _cond;
-}
+};
+#endif
