@@ -47,10 +47,7 @@ threadpool<T>::threadpool(int actor_model,connection_pool * connPool,int thread_
             delete[] _threads;
             throw std::exception();
         }
-        if (pthread_detach(_threads[i])){
-            delete[] _threads;
-            throw std::exception();
-        }
+        
     }
 }
 template <class T>
@@ -108,28 +105,21 @@ void threadpool<T>::_run(){
         if(_actor_model==1){
             request->improv = 1;
             if(request->state==0){
-                
                 if (request->read_once()){
-                    
                     connectionRAII mysqlcon(&request->mysql,_conn_pool);
                     request->process();
-                }
-                else{
-                    
+                }else{
                     request->timer_flag = 1;
                 }
-            }
-            else{
+            }else{
                 if(!request->write()){
                     request->timer_flag = 1;
                 }
             }
-        }
-        else{
+        }else{
             connectionRAII mysqlcon(&request->mysql,m_connPool);
             request->process();
         }
-
     }
 }
 #endif
