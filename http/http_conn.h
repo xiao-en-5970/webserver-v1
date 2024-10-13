@@ -26,7 +26,7 @@
 #include "../timer/lst_timer.h"
 #include "../log/log.h"
 
-using namespace std;
+// using namespace std;
 class http_conn{
 public:
     static const int FILENAME_LEN = 200;
@@ -71,8 +71,8 @@ public:
     void init(int sockfd,const sockaddr_in &addr,char*,int,int,string user,string passwd,string sqlname);
     void close_conn(bool real_close = true);
     void process();
-    void read_once();
-    void write();
+    bool read_once();
+    bool write();
     sockaddr_in *get_address(){
         return &m_address;
     }
@@ -124,18 +124,18 @@ private:
     char *m_host;
     long m_content_length;
     bool m_linger;
-    char m_life_address;
+    char *m_file_address;
     struct stat m_file_stat;
     struct iovec m_iv[2];
     int m_iv_count;
     int cgi;
     char *m_string;
     int bytes_to_send;
-    int bytes_haves_send;
+    int bytes_have_send;
     char *doc_root;
 
     map<string,string> m_users;
-    int m_TRUGMode;
+    int m_TRIGMode;
     int m_close_log;
     
     char sql_user[100];
